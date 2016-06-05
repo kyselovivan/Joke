@@ -2,6 +2,7 @@ package ua.kyselov.joke;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.util.Log;
 
 
 /**
@@ -13,12 +14,7 @@ import android.content.Intent;
 public class DelayedMessageService extends IntentService {
     // TODO: Rename actions, choose action names that describe tasks that this
     // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
-    public static final String ACTION_FOO = "ua.kyselov.joke.action.FOO";
-    public static final String ACTION_BAZ = "ua.kyselov.joke.action.BAZ";
-
-    // TODO: Rename parameters
-    public static final String EXTRA_PARAM1 = "ua.kyselov.joke.extra.PARAM1";
-    public static final String EXTRA_PARAM2 = "ua.kyselov.joke.extra.PARAM2";
+    public static final String EXTRA_MESSAGE = "message";
 
     public DelayedMessageService() {
         super("DelayedMessageService");
@@ -26,18 +22,19 @@ public class DelayedMessageService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        if (intent != null) {
-            final String action = intent.getAction();
-            if (ACTION_FOO.equals(action)) {
-                final String param1 = intent.getStringExtra(EXTRA_PARAM1);
-                final String param2 = intent.getStringExtra(EXTRA_PARAM2);
-                handleActionFoo(param1, param2);
-            } else if (ACTION_BAZ.equals(action)) {
-                final String param1 = intent.getStringExtra(EXTRA_PARAM1);
-                final String param2 = intent.getStringExtra(EXTRA_PARAM2);
-                handleActionBaz(param1, param2);
+        synchronized (this){
+            try {
+                wait(10000);
+            }catch (InterruptedException e){
+                e.printStackTrace();
             }
         }
+        String text = intent.getStringExtra(EXTRA_MESSAGE);
+        showText(text);
+    }
+
+    private void showText(String text) {
+        Log.v("DelayedMessageService","The message is: " + text);
     }
 
     /**

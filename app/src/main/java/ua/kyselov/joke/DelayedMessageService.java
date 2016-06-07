@@ -5,6 +5,10 @@ import android.content.Intent;
 import android.util.Log;
 
 
+import android.os.Handler;
+import java.util.logging.LogRecord;
+
+
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
  * a service on a separate handler thread.
@@ -12,12 +16,17 @@ import android.util.Log;
  * TODO: Customize class - update intent actions and extra parameters.
  */
 public class DelayedMessageService extends IntentService {
-    // TODO: Rename actions, choose action names that describe tasks that this
-    // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
+    private Handler handler;
     public static final String EXTRA_MESSAGE = "message";
 
     public DelayedMessageService() {
         super("DelayedMessageService");
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId){
+        handler = new Handler();
+        return super.onStartCommand(intent,flags,startId);
     }
 
     @Override

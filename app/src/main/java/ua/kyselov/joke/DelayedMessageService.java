@@ -6,6 +6,8 @@ import android.util.Log;
 
 
 import android.os.Handler;
+import android.widget.Toast;
+
 import java.util.logging.LogRecord;
 
 
@@ -42,8 +44,13 @@ public class DelayedMessageService extends IntentService {
         showText(text);
     }
 
-    private void showText(String text) {
-        Log.v("DelayedMessageService","The message is: " + text);
+    private void showText(final String text) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(),text,Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     /**
